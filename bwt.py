@@ -18,6 +18,8 @@ class BWT(object):
         lastString=""
         for s in matrix:
             lastString+=s[-1]
+        self.lastString=lastString
+        self.origin=origin
         return lastString, origin
 
     def decode(self,origin,lastString):

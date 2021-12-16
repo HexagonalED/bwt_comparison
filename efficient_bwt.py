@@ -10,9 +10,30 @@ class efficientBWT(object):
 
         S = input+'$'
         suffix = SuffixTree(S)
+        sufArr=suffix.traverse(0,0)
+        ret=""
+        origin=sufArr.index(len(input))
+        for x in sufArr:
+            if x==0:
+                ret+='$'
+            else:
+                ret+=S[x-1]
 
+        #return ret.replace('$',''),origin
+        return ret,origin
 
     def decode(self):
 
         output = ""
         return output
+
+
+
+if __name__=="__main__":
+    x=efficientBWT()
+    ret=x.encode("appellee")
+    print(ret)
+
+
+
+

@@ -1,9 +1,10 @@
 class Node(object):
     def __init__(self):
         self.suffix_node = -1
+        self.children=[]
 
     def __repr__(self):
-        return "Node(suffix link: %d)" % self.suffix_node
+        return "Node(suffix link: %d),children:%s" % (self.suffix_node,self.children)
 
 
 class Edge(object):
@@ -102,9 +103,11 @@ class SuffixTree(object):
 
     def _insert_edge(self, edge):
         self.edges[(edge.source_node_index, self.string[edge.first_char_index])] = edge
+        self.nodes[edge.source_node_index].children.append(edge)
 
     def _remove_edge(self, edge):
         self.edges.pop((edge.source_node_index, self.string[edge.first_char_index]))
+        self.nodes[edge.source_node_index].children.remove(edge)
 
     def _split_edge(self, edge, suffix):
         self.nodes.append(Node())
@@ -145,8 +148,20 @@ class SuffixTree(object):
             curr_node = edge.dest_node_index
         return edge.first_char_index - len(substring) + ln
 
-    def has_substring(self, substring):
-        return self.find_substring(substring) != -1
+    def traverse(self,cur_index,pos_overhead):
+        ret=[]
+        s=self.string
+        c=self.nodes[cur_index].children
+        c.sort(key=lambda x:s[x.first_char_index])
+        for x in c:
+            pos_diff=x.last_char_index-x.first_char_index+1
+            if self.nodes[x.dest_node_index].suffix_node==-1:
+                ret.append(x.first_char_index-pos_overhead)
+            else:
+                ret.extend(self.traverse(x.dest_node_index,pos_diff))
+        return ret
 
-    def traverse(selfself):
-        return "asdf"
+
+
+
+
